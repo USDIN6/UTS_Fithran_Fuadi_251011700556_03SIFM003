@@ -7,9 +7,7 @@ use Illuminate\Database\Seeder;
 
 class BikeSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    /**ngisi seeder **/
     public function run(): void
     {
         $bikes = [
