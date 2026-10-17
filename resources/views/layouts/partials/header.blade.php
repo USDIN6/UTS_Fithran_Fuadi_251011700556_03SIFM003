@@ -2,14 +2,14 @@
     // Menu navigasi utama. Dipakai bersama oleh item navbar.
     // Active state dicek dengan request()->routeIs() per item.
     $menu = [
-        ['label' => 'Beranda', 'url' => route('bikes.index'), 'route' => 'bikes.index'],
-        ['label' => 'Armada',  'url' => route('bikes.index') . '#armada', 'route' => 'bikes.show'],
+        ['label' => 'Beranda', 'url' => route('beranda'),      'route' => 'beranda'],
+        ['label' => 'Armada',  'url' => route('bikes.index'),  'route' => 'bikes.index'],
     ];
 @endphp
 
 <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark" aria-label="Navigasi utama">
     <div class="container">
-        <a class="navbar-brand fw-semibold" href="{{ route('bikes.index') }}">
+        <a class="navbar-brand fw-semibold" href="{{ route('beranda') }}">
             Rental Sepeda
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-controls="navbarMain" aria-expanded="false" aria-label="Buka menu navigasi">
