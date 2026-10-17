@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300">
+  <rect width="400" height="300" fill="#f8f9fa"/>
+  <rect x="2" y="2" width="396" height="296" fill="none" stroke="#dee2e6" stroke-width="4"/>
+  <text x="200" y="42" text-anchor="middle" font-family="sans-serif" font-size="15" fill="#6c757d">Mountain Bike</text>
+  <circle cx="120" cy="175" r="50" fill="none" stroke="#c62828" stroke-width="8"/>
+  <circle cx="280" cy="175" r="50" fill="none" stroke="#c62828" stroke-width="8"/>
+  <path d="M 120 175 L 182 175 L 205 110 L 158 110 M 182 175 L 225 105 L 280 175 M 225 105 L 217 98 M 205 110 L 248 175" fill="none" stroke="#c62828" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 217 94 L 240 87 M 217 94 L 210 85" stroke="#c62828" stroke-width="6" stroke-linecap="round"/>
+  <rect x="0" y="242" width="400" height="58" fill="#ffffff"/>
+  <text x="200" y="278" text-anchor="middle" font-family="sans-serif" font-size="20" font-weight="bold" fill="#212529">United Clovis</text>
+</svg>
