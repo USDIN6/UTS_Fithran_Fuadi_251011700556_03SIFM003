@@ -11,10 +11,13 @@
 
     @include('layouts.partials.header')
 
-    <main class="flex-grow-1 py-4">
-        <div class="container">
-            @yield('content')
-        </div>
+    {{-- Catatan: .container TIDAK lagi dipasang di sini.
+         Alasannya: beranda butuh seksi yang latarnya selebar layar
+         (hero berwarna). Jadi tiap halaman sekarang membuat
+         <section> sendiri, lalu memasang .container di dalamnya
+         untuk isi yang tetap rapi di tengah. --}}
+    <main class="flex-grow-1">
+        @yield('content')
     </main>
 
     @include('layouts.partials.footer')

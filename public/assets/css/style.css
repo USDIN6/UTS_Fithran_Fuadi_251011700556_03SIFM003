@@ -2,7 +2,871 @@
    style.css - UTS Rekayasa Web
    Fithran Fuadi - 251011700556 - 03SIFM003
    ------------------------------------------------------------
-   Fase 1: file sengaja dikosongkan (hanya komentar ini).
-   Semua tampilan memakai kelas Bootstrap standar.
-   Fase 2 (UI): gaya kustom ditulis di sini.
+   Fase 2 (UI): gaya kustom tema sky-blue-oranye (hasil riset desain
+   UI/UX Pro Max, tipe produk Travel/Booking).
+   Prinsip: class Bootstrap tetap dipakai untuk layout; file ini
+   hanya menambah "rasa" (warna tema, pill, card pastel, ikon).
    ============================================================ */
+
+/* ---------- 1. Variabel tema (ubah warna situs di sini) ---------- */
+/* Tema "cream + navy + hijau" mengikuti referensi desain terbaru:
+   latar krem hangat, teks navy gelap, aksen hijau, badge pastel. */
+:root {
+    --rs-navy: #17263f;         /* teks judul & tombol pill gelap */
+    --rs-navy-alt: #0f1b30;     /* alternatif navy (hover) */
+    --rs-navy-deep: #101b2e;    /* footer */
+    --rs-teal: #22a45d;         /* aksen utama: hijau daun (logo, harga, underline) */
+    --rs-teal-dark: #187a43;
+    --rs-orange: #ea7317;       /* aksen sekunder: badge Sepeda Lipat */
+    --rs-orange-dark: #c2570a;
+    --rs-blue: #3b82f6;         /* aksen badge Road Bike & ikon fitur */
+    --rs-purple: #8b5cf6;       /* aksen badge City Bike & ikon fitur */
+    --rs-green: #16a36a;        /* badge Ready / statistik ready */
+    --rs-mint: #e3f2e7;         /* latar pill & card fitur 1 (hijau muda) */
+    --rs-cream: #fdeedc;        /* card fitur 2 (oranye muda) */
+    --rs-lavender: #efeafb;     /* card fitur 3 (ungu muda) */
+    --rs-bg: #faf6ef;           /* latar halaman (krem hangat) */
+    --rs-surface: #fdfaf4;      /* permukaan lebih terang (navbar, hero) */
+    --rs-text: #1c2b44;         /* teks utama */
+    --rs-muted: #6b7280;        /* teks sekunder */
+    --rs-line: #e9e2d4;         /* garis / border tipis (warm) */
+    --rs-shadow: 0 12px 30px rgba(23, 38, 63, 0.10);
+}
+
+/* ---------- 1b. Font lokal (tanpa internet) ---------- */
+/* Poppins = heading (geometris, ramah), Open Sans = body (mudah dibaca).
+   Palet & font dari riset UI/UX Pro Max: palet Travel/Tourism +
+   pairing "Modern Professional". */
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/Poppins-400.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/Poppins-600.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/Poppins-700.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Poppins';
+    src: url('../fonts/Poppins-800.woff2') format('woff2');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../fonts/OpenSans-400.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../fonts/OpenSans-600.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap;
+}
+@font-face {
+    font-family: 'Open Sans';
+    src: url('../fonts/OpenSans-700.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+body {
+    background-color: var(--rs-bg);
+    font-family: 'Open Sans', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4, h5, h6,
+.navbar-brand, .btn, .badge,
+.rs-hero-title, .rs-section-title, .rs-footer-title {
+    font-family: 'Poppins', system-ui, sans-serif;
+}
+
+/* Lebar isi halaman.
+   Bawaan Bootstrap: .container mentok 1140px, jadi di layar 1280px
+   sisa kosong kiri-kanan ~70px dan halaman terasa "mengumpul di
+   tengah". Di sini lebarnya dinaikkan dan dibuat ikut lebar layar,
+   dengan sisa jarak tipis supaya isi tidak menempel ke tepi.
+   - min(...) dipakai supaya di layar sangat lebar isi berhenti di
+     1760px (biar baris teks tidak kepanjangan)
+   - 100% - 3rem = lebar layar dikurangi jarak kiri+kanan
+   Navbar, isi halaman, dan footer dipakai bersamaan supaya
+   tepi kiri-kanannya sejajar. */
+@media (min-width: 1200px) {
+    .navbar > .container,
+    main .container,
+    footer .container {
+        max-width: min(1760px, 100% - 3rem);
+    }
+}
+
+/* ---------- 2. Navbar TERANG (krem) — gaya referensi ---------- */
+/* Navbar tidak lagi bg-dark: latar krem, teks navy, brand + logo
+   lingkaran hijau, menu kiri-tengah, ikon search + tombol pill kanan. */
+.rs-navbar {
+    background: var(--rs-surface);
+    border-bottom: 1px solid var(--rs-line);
+    padding-top: 0.8rem;
+    padding-bottom: 0.8rem;
+}
+
+.rs-navbar .navbar-brand {
+    color: var(--rs-navy);
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+}
+
+/* Logo: lingkaran hijau muda + ikon sepeda hijau (kayak referensi) */
+.rs-navbar__logo {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 50%;
+    font-size: 1.15rem;
+    color: var(--rs-teal-dark);
+    background: var(--rs-mint);
+}
+
+/* Menu: teks abu, aktif = navy + underline hijau (sesuai referensi) */
+.rs-navbar .nav-link {
+    color: var(--rs-muted);
+    font-weight: 600;
+    padding: 0.35rem 0.35rem;
+    margin-right: 0.5rem;
+    transition: color 0.18s ease;
+}
+
+.rs-navbar .nav-link:hover {
+    color: var(--rs-navy);
+}
+
+.rs-navbar .nav-link.active {
+    color: var(--rs-navy);
+    box-shadow: inset 0 -2px 0 var(--rs-teal);
+}
+
+/* Toggler di navbar terang: ikonnya gelap */
+.rs-navbar .navbar-toggler {
+    border-color: var(--rs-line);
+}
+
+/* Ikon search bulat di kanan */
+.rs-navbar__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 50%;
+    border: 1px solid var(--rs-line);
+    color: var(--rs-navy);
+    font-size: 1.05rem;
+    background: #fff;
+    transition: background-color 0.18s ease, transform 0.18s ease;
+}
+.rs-navbar__icon:hover {
+    background: var(--rs-mint);
+    transform: translateY(-1px);
+}
+
+/* Tombol pill gelap (analog "Log in" di referensi) */
+.btn-rs-dark {
+    --bs-btn-bg: var(--rs-navy);
+    --bs-btn-border-color: var(--rs-navy);
+    --bs-btn-hover-bg: var(--rs-navy-alt);
+    --bs-btn-hover-border-color: var(--rs-navy-alt);
+    --bs-btn-active-bg: var(--rs-navy-alt);
+    --bs-btn-active-border-color: var(--rs-navy-alt);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-focus-shadow-rgb: 23, 38, 63;
+    border-radius: 50rem;
+    font-weight: 600;
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.btn-rs-dark:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(23, 38, 63, 0.30);
+}
+
+/* Footer tetap navy gelap */
+footer.bg-dark {
+    background-color: var(--rs-navy-deep) !important;
+}
+
+/* ---------- 3. Tombol utama navy + hover teal ---------- */
+.btn-rs {
+    --bs-btn-bg: var(--rs-navy);
+    --bs-btn-border-color: var(--rs-navy);
+    --bs-btn-hover-bg: var(--rs-teal);
+    --bs-btn-hover-border-color: var(--rs-teal);
+    --bs-btn-active-bg: var(--rs-teal-dark);
+    --bs-btn-active-border-color: var(--rs-teal-dark);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-focus-shadow-rgb: 2, 132, 199;
+    border-radius: 0.6rem;
+    font-weight: 600;
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+}
+
+/* Tombol CTA utama: pill NAVY GELAP (kayak "Lihat Sepeda" di referensi).
+   Gradient halus + shadow berwarna supaya terasa terangkat. */
+.btn-rs-cta {
+    --bs-btn-bg: var(--rs-navy);
+    --bs-btn-border-color: var(--rs-navy);
+    --bs-btn-hover-bg: var(--rs-navy-alt);
+    --bs-btn-hover-border-color: var(--rs-navy-alt);
+    --bs-btn-active-bg: var(--rs-navy-alt);
+    --bs-btn-active-border-color: var(--rs-navy-alt);
+    --bs-btn-color: #fff;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-focus-shadow-rgb: 23, 38, 63;
+    border-radius: 0.6rem;
+    font-weight: 600;
+    padding-left: 1.15rem;
+    padding-right: 1.15rem;
+    background-image: linear-gradient(135deg, #22334f 0%, var(--rs-navy) 55%, #101b2e 100%);
+    box-shadow: 0 8px 20px rgba(23, 38, 63, 0.28);
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.btn-rs-cta:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(23, 38, 63, 0.40);
+}
+.btn-rs-cta:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 12px rgba(23, 38, 63, 0.32);
+}
+
+/* Tombol sekunder (biru -> hijau tema baru): hover terangkat */
+.btn-rs {
+    --bs-btn-focus-shadow-rgb: 34, 164, 93;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+.btn-rs:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 8px 18px rgba(34, 164, 93, 0.28);
+}
+
+.btn.btn-outline-dark {
+    border-radius: 0.6rem;
+    font-weight: 600;
+}
+
+/* ---------- 4. Pill lembut (pastel) di hero ---------- */
+.rs-pill {
+    display: inline-block;
+    padding: 0.35em 0.9em;
+    border-radius: 50rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+.rs-pill--mint     { background: var(--rs-mint);     color: var(--rs-teal-dark); }
+.rs-pill--cream    { background: var(--rs-cream);    color: var(--rs-orange-dark); }
+.rs-pill--lavender { background: var(--rs-lavender); color: #475569; }
+.rs-pill--navy     { background: var(--rs-navy);     color: #fff; }
+
+/* ---------- 5. Pill statistik solid (unit / ready) ---------- */
+.rs-stat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4em;
+    padding: 0.4em 0.95em;
+    border-radius: 50rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #fff;
+}
+.rs-stat--navy  { background: var(--rs-navy); }
+.rs-stat--green { background: #198754; }
+
+/* ---------- 6. Card fitur pastel (beranda) ---------- */
+.rs-feature {
+    border-radius: 1.25rem;
+    border: 1px solid var(--rs-line);
+    box-shadow: none;
+    transition: transform 0.22s ease, box-shadow 0.22s ease;
+}
+.rs-feature:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 32px rgba(2, 132, 199, 0.13);
+}
+.rs-feature .card-body {
+    padding: 1.75rem;
+}
+.rs-feature--mint     { background: var(--rs-mint); }
+.rs-feature--cream    { background: var(--rs-cream); }
+.rs-feature--lavender { background: var(--rs-lavender); }
+
+.rs-feature-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    font-size: 1.2rem;
+    color: #fff;
+    background: linear-gradient(135deg, #34c477, var(--rs-teal-dark));
+    box-shadow: 0 8px 16px rgba(34, 164, 93, 0.35);
+    transition: transform 0.22s ease;
+}
+.rs-feature--cream    .rs-feature-icon {
+    background: linear-gradient(135deg, #60a5fa, #2563eb);
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.32);
+}
+.rs-feature--lavender .rs-feature-icon {
+    background: linear-gradient(135deg, #a78bfa, #7c3aed);
+    box-shadow: 0 8px 16px rgba(139, 92, 246, 0.32);
+}
+.rs-feature:hover .rs-feature-icon {
+    transform: scale(1.08) rotate(-4deg);
+}
+
+/* Ikon fitur varian warna untuk hero 3 kolom (harga=biru, jenis=ungu) */
+.rs-feature--cream-icon {
+    background: linear-gradient(135deg, #60a5fa, #2563eb);
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.32);
+}
+.rs-feature--purple-icon {
+    background: linear-gradient(135deg, #a78bfa, #7c3aed);
+    box-shadow: 0 8px 16px rgba(139, 92, 246, 0.32);
+}
+
+.rs-feature h2 {
+    font-size: 1.05rem;
+    letter-spacing: -0.01em;
+}
+
+/* ---------- 7. Card sepeda ---------- */
+.rs-card {
+    border: 1px solid var(--rs-line);
+    border-radius: 1.1rem;
+    box-shadow: 0 2px 10px rgba(2, 132, 199, 0.07);
+    overflow: hidden;
+    transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+.rs-card:hover {
+    box-shadow: 0 14px 30px rgba(2, 132, 199, 0.15);
+    transform: translateY(-3px);
+}
+
+/* Gambar sepeda rata & rapi di semua card */
+.rs-card .card-img-top {
+    aspect-ratio: 4 / 3;
+    object-fit: contain;
+    background: #fff;
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--rs-line);
+}
+
+/* Harga berwarna teal sesuai desain */
+.rs-price {
+    color: var(--rs-teal);
+    font-weight: 700;
+}
+
+/* Bagian "/hari" di belakang harga: dibuat lebih kecil supaya
+   angka harganya tetap jadi yang paling menonjol. */
+.rs-price-unit {
+    font-size: 0.78em;
+    font-weight: 500;
+}
+
+/* Ikon kecil di baris unit/gear */
+.rs-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+}
+
+/* ---------- 7b. Card sepeda HORIZONTAL COMPACT ----------
+   Foto kiri (~40%), informasi kanan (~60%). Dipakai di halaman
+   armada. Semua ukuran kecil & rapat supaya card tidak tinggi. */
+
+.rs-bike-card {
+    border: 1px solid var(--rs-line);
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(2, 132, 199, 0.06);
+    background: #fff;
+    overflow: hidden;
+    transition: box-shadow 0.18s ease, transform 0.18s ease,
+                border-color 0.18s ease;
+}
+
+.rs-bike-card:hover {
+    border-color: #bae6fd;
+    box-shadow: 0 10px 24px rgba(2, 132, 199, 0.12);
+    transform: translateY(-2px);
+}
+
+/* Isi card: foto + info berdampingan. Padding kecil (10px) sesuai
+   aturan desain supaya card tetap ringkas. */
+.rs-bike-card__body {
+    display: flex;
+    gap: 0.75rem;
+    padding: 10px;
+    height: 100%;
+    /* stretch -> tinggi foto mengikuti tinggi info, jadi semua card
+       dalam satu baris otomatis sama tinggi (dengan h-100 dari grid) */
+    align-items: stretch;
+}
+
+.rs-bike-card .rs-bike-card__body {
+    min-height: 168px;
+}
+
+/* ---------- area foto (kiri, ~40%) ---------- */
+.rs-bike-card__media {
+    position: relative;
+    flex: 0 0 38%;
+    max-width: 38%;
+    border-radius: 8px;
+    overflow: hidden;
+    background: var(--rs-bg);
+}
+
+.rs-bike-card__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* Khusus gambar .svg (aset sepeda kita berlatar transparan):
+   pakai contain supaya sepeda tidak terpotong. Untuk foto bitmap
+   (.jpg/.png) yang akan datang, aturan cover di atas tetap
+   berlaku -- itu yang diminta desain. */
+.rs-bike-card__img[src$=".svg"] {
+    object-fit: contain;
+    padding: 0.35rem;
+}
+
+/* Badge status overlay di kiri atas foto */
+.rs-bike-card__status {
+    position: absolute;
+    top: 0.4rem;
+    left: 0.4rem;
+}
+
+.rs-bike-card__status .badge {
+    font-size: 0.68rem;
+    padding: 0.32em 0.6em;
+}
+
+/* ---------- area informasi (kanan) ---------- */
+.rs-bike-card__info {
+    flex: 1 1 62%;
+    min-width: 0;            /* wajib, biar teks panjang tidak meluber */
+    display: flex;
+    flex-direction: column;
+    padding: 2px 2px 2px 0;
+}
+
+/* Kolom teks (nama + jenis) di kiri baris atas. flex:1 + min-width:0
+   membuatnya mengisi sisa ruang setelah badge; tanpa flex, blok ini
+   hanya selebar teks nama yang paling panjang dan bisa sangat sempit
+   di card 3 kolom (nama + jenis jadi wrap dan tinggi card tidak rata). */
+.rs-bike-card__headline {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.rs-bike-card__name {
+    font-size: 0.95rem;      /* ±15px */
+    font-weight: 700;
+    line-height: 1.25;
+    color: var(--rs-text);
+    /* Nama boleh 2 baris, lebih dari itu dipotong rapi */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    /* Tinggi blok nama DIKUNCI 2 baris. Tanpa ini, card yang namanya
+       1 baris jadi lebih pendek dari yang 2 baris, sehingga tinggi
+       card dalam satu baris tidak rata. */
+    min-height: 2.5em;
+}
+
+.rs-bike-card__type {
+    display: block;
+    font-size: 0.8rem;
+    color: var(--rs-muted);
+    line-height: 1.3;
+    margin-top: 2px;
+    /* Jenis dikunci 1 baris + ellipsis. Kalau dibiarkan wrap, card
+       yang jenisnya panjang jadi 2 baris dan tinggi card tidak rata. */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Badge kecil di kanan atas area informasi */
+.rs-bike-card__info .badge {
+    font-size: 0.68rem;
+    padding: 0.32em 0.6em;
+}
+
+/* ---------- chip Unit / Gear (horizontal, bukan tumpuk) ---------- */
+.rs-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3em;
+    padding: 0.25em 0.6em;
+    border: 1px solid var(--rs-line);
+    border-radius: 6px;
+    background: var(--rs-bg);
+    font-size: 0.73rem;
+    color: var(--rs-muted);
+    white-space: nowrap;
+}
+
+.rs-chip .rs-icon {
+    font-size: 0.9em;
+    opacity: 0.75;
+}
+
+/* Harga di card horizontal: sedikit lebih besar dari info lain,
+   tapi tetap compact. */
+.rs-bike-card__info .rs-price {
+    font-size: 1.02rem;
+    line-height: 1.2;
+    margin-bottom: 0.4rem !important;
+}
+
+/* Tombol di card horizontal: compact, lebar penuh area info. */
+.rs-bike-card__info .btn {
+    --bs-btn-padding-y: 0.3rem;
+    --bs-btn-padding-x: 0.75rem;
+    --bs-btn-font-size: 0.83rem;
+    border-radius: 7px;
+}
+
+/* Sembunyikan tombol badge ganda di layar sangat sempit:
+   badge kanan atas cukup satu (yang di foto disembunyikan). */
+@media (max-width: 575.98px) {
+    .rs-bike-card__media {
+        flex: 0 0 42%;
+        max-width: 42%;
+    }
+}
+
+/* ---------- 8. Aksen teks ---------- */
+.rs-text-teal { color: var(--rs-teal); }
+
+/* ---------- 8b. Filter & pencarian (halaman armada) ---------- */
+
+/* Kotak kontrol: latar putih, border tipis, rounded -- sesuai
+   style.css tema. Bootstrap dipakai untuk layout, file ini hanya
+   menyamakan warna & radius. */
+.rs-filter__control {
+    border: 1px solid var(--rs-line);
+    border-radius: 8px;
+    background-color: #fff;
+    color: var(--rs-text);
+    font-size: 0.875rem;
+    padding-top: 0.45rem;
+    padding-bottom: 0.45rem;
+}
+
+.rs-filter__control:focus {
+    border-color: var(--rs-teal);
+    box-shadow: 0 0 0 0.2rem rgba(14, 165, 233, 0.18);
+}
+
+/* Kotak ikon search di kiri input */
+.rs-filter__icon {
+    background-color: #fff;
+    border: 1px solid var(--rs-line);
+    border-right: 0;
+    border-radius: 8px 0 0 8px;
+    color: var(--rs-muted);
+}
+
+/* Saat ikon dipakai, input di sebelahnya tidak perlu radius kiri */
+.rs-filter__icon + .rs-filter__control {
+    border-left: 0;
+    border-radius: 0;
+}
+
+/* ---------- 8c. Keadaan kosong (filter tanpa hasil) ---------- */
+.rs-empty {
+    border: 1px dashed var(--rs-line);
+    border-radius: 12px;
+    background: #fff;
+    padding: 3rem 1.5rem;
+    text-align: center;
+}
+
+.rs-empty__icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--rs-muted);
+    opacity: 0.5;
+    margin-bottom: 0.75rem;
+}
+
+.rs-empty__title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--rs-text);
+    margin-bottom: 0.35rem;
+}
+
+.rs-empty__text {
+    font-size: 0.9rem;
+    color: var(--rs-muted);
+    margin-bottom: 0;
+}
+
+/* ============================================================
+   9. TATA LETAK HALAMAN (revisi tampilan)
+   Tujuan: halaman tidak lagi terasa seperti pita sempit di
+   tengah latar putih. Caranya: band warna selebar layar,
+   ritme jarak antar seksi, dan judul seksi.
+   ============================================================ */
+
+/* Band isi halaman. Layout sudah tidak membungkus @yield('content')
+   dengan .container, jadi <section> di tiap halaman otomatis selebar
+   layar dan tinggal dikasih latar + jarak.
+   CATATAN: sengaja TIDAK memakai trik width:100vw. 100vw ikut
+   menghitung lebar scrollbar, jadi band jadi ~7px lebih lebar dari
+   layar dan bikin halaman bergeser ke kanan. */
+.rs-band {
+    width: 100%;
+}
+
+.rs-band--hero {
+    background:
+        radial-gradient(700px 380px at 62% 28%, rgba(34, 164, 93, 0.10), transparent 62%),
+        radial-gradient(600px 320px at 15% 85%, rgba(59, 130, 246, 0.08), transparent 60%),
+        linear-gradient(180deg, var(--rs-surface) 0%, #f3edde 100%);
+    border-bottom: 1px solid var(--rs-line);
+}
+
+.rs-band--soft {
+    background: #ffffff;
+    border-top: 1px solid var(--rs-line);
+    border-bottom: 1px solid var(--rs-line);
+}
+
+/* Ritme vertikal seksi */
+.rs-section        { padding: 4rem 0; }
+.rs-section--tight { padding: 3rem 0; }
+
+@media (max-width: 767.98px) {
+    .rs-section        { padding: 2.5rem 0; }
+    .rs-section--tight { padding: 2rem 0; }
+}
+
+/* Label kecil di atas judul seksi */
+.rs-eyebrow {
+    display: inline-block;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--rs-teal-dark);
+    background: rgba(14, 165, 233, 0.08);
+    padding: 0.3em 0.8em;
+    border-radius: 50rem;
+    margin-bottom: 0.75rem;
+}
+
+/* Judul halaman / seksi */
+.rs-section-title {
+    font-size: clamp(1.45rem, 2.2vw, 1.9rem);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--rs-navy);
+}
+
+/* Judul hero */
+.rs-hero-title {
+    font-size: clamp(2.05rem, 4.2vw, 3.2rem);
+    font-weight: 800;
+    line-height: 1.14;
+    letter-spacing: -0.03em;
+    color: var(--rs-navy);
+}
+
+/* Kata terakhir judul hero diberi gradasi HIJAU — aksen ala referensi.
+   Target = .rs-accent */
+.rs-accent {
+    background: linear-gradient(90deg, var(--rs-teal-dark), #34c477);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+}
+
+/* Blob gradasi di bawah sepeda hero (kayak referensi: hijau + biru pastel) */
+.rs-hero-blob {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+    background: linear-gradient(135deg, #dcefe0 0%, #d7e6f7 100%);
+    border-radius: 42% 58% 55% 45% / 48% 42% 58% 52%;
+}
+.rs-hero-blob img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 18px 24px rgba(23, 38, 63, 0.18));
+}
+
+.rs-hero-lead {
+    max-width: 34rem;
+    color: var(--rs-muted);
+}
+
+/* Bingkai gambar hero */
+.rs-hero-img {
+    border-radius: 1.5rem;
+    box-shadow: 0 24px 50px rgba(2, 132, 199, 0.18);
+    background: #fff;
+    width: 100%;
+    height: auto;
+}
+
+/* ---------- 10. Footer ---------- */
+footer.bg-dark {
+    background-color: var(--rs-navy-deep) !important;
+}
+.rs-footer-title {
+    color: #fff;
+    font-weight: 700;
+    font-size: 0.95rem;
+}
+footer a {
+    color: rgba(255, 255, 255, 0.6);
+    text-decoration: none;
+    transition: color 0.18s ease, padding-left 0.18s ease;
+}
+footer a:hover {
+    color: #fff;
+    padding-left: 0.25rem;
+}
+
+/* ---------- 12. Polish global ---------- */
+::selection {
+    background: var(--rs-teal);
+    color: #fff;
+}
+
+/* ---------- 13. Seksi "Jenis Sepeda Populer" (kartu geser) ---------- */
+/* Baris kartu bisa digeser horizontal (scroll + snap), tombol panah
+   di header seksi yang menggesernya (onclick scrollBy, tanpa library). */
+.rs-pop-row {
+    scroll-behavior: smooth;
+    scroll-snap-type: x mandatory;
+    /* sembunyikan scrollbar biar bersih, panah sudah cukup */
+    scrollbar-width: none;
+}
+.rs-pop-row::-webkit-scrollbar { display: none; }
+.rs-pop-row > * {
+    scroll-snap-align: start;
+    /* kartufix: lebar tetap supaya snap rapi; 5 kartu muat sebagian
+       di layar besar sehingga jelas "bisa digeser" */
+    flex: 0 0 240px;
+    max-width: 240px;
+}
+
+.rs-pop-card {
+    height: 100%;
+    border: 1px solid var(--rs-line);
+    border-radius: 1rem;
+    background: #fff;
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.rs-pop-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 28px rgba(23, 38, 63, 0.12);
+}
+.rs-pop-card__media {
+    aspect-ratio: 4 / 3;
+    background: #f1ede4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.9rem;
+}
+.rs-pop-card__media img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+.rs-pop-card__body {
+    padding: 0.9rem 1rem 1.1rem;
+}
+
+/* Badge jenis sepeda warna-warni (MTB hijau, Road biru, dst) */
+.rs-tag {
+    display: inline-block;
+    padding: 0.22em 0.7em;
+    border-radius: 50rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+}
+.rs-tag--green  { background: var(--rs-mint);     color: var(--rs-teal-dark); }
+.rs-tag--blue   { background: #e0ecfe;            color: #2563eb; }
+.rs-tag--orange { background: var(--rs-cream);    color: var(--rs-orange-dark); }
+.rs-tag--purple { background: var(--rs-lavender); color: #7c3aed; }
+
+/* Tombol panah bulat (prev/next slider) */
+.rs-arrow {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    border: 1px solid var(--rs-line);
+    background: #fff;
+    color: var(--rs-navy);
+    transition: background-color 0.18s ease, transform 0.18s ease;
+}
+.rs-arrow:hover {
+    background: var(--rs-mint);
+    transform: translateY(-1px);
+}
+
+/* ---------- 11. Halaman detail ---------- */
+.rs-detail-img {
+    border-radius: 1.25rem;
+    border: 1px solid var(--rs-line);
+    background: #fff;
+    padding: 1rem;
+    width: 100%;
+}
+.rs-spec .list-group-item {
+    border-color: var(--rs-line);
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
+    font-size: 0.95rem;
+}
